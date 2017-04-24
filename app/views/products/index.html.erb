@@ -1,0 +1,36 @@
+<%= content_for :middle do %>
+<style media="screen">
+  td{
+    width: 200px;
+  }
+</style>
+<h1>Hi, <%= @user.first_name%></h1>
+<h4><a href="/dashboard/<%= @user.id %>">Go to Dashboard</a> || <a href="/sessions/<%= current_user.id%>" data-method="DELETE">Logout</a></h4>
+<h1>All Products</h1>
+<table>
+    <thead>
+      <tr>
+        <td><h4>Product</h4></td>
+        <td><h4>Seller</h4></td>
+        <td><h4>Date Posted</h4></td>
+        <td><h4>Amount</h4></td>
+        <td><h4>Action</h4></td>
+      </tr>
+    </thead>
+    <tbody>
+    <% @products.each do |product| %>
+      <% if !product.transactions.exists? %>
+      <tr>
+        <td><%= product.name %></td>
+        <td><%= product.user.first_name %> <%= product.user.last_name %></td>
+        <td><%= product.created_at.strftime("%B %d, %Y") %></td>
+        <td>$<%= product.price %></td>
+        <% if product.user != current_user %>
+        <td><a href="/transactions/<%= product.id%>" data-method="POST">Buy</a></td>
+        <% end %>
+      </tr>
+      <% end %>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>

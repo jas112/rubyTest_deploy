@@ -1,0 +1,87 @@
+<%= content_for :middle do %>
+<style media="screen">
+  td{
+    width: 200px;
+  }
+</style>
+
+<h1>Hi, <%= @user.first_name%></h1>
+<h3>Sell Product</h3>
+<form action="/products" method="post">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <p>Product Name:</p>
+  <input type="text" name="product[name]" id="Product_Name" placeholder="Enter Product Name Here">
+  <p>Amount:</p>
+  <input type="number" name="product[price]" id="Product_Price">
+  <input type="submit" name="Sell" value="Sell">
+</form>
+<h4><a href="/shoes">Go to All Products</a> || <a href="/sessions/<%= current_user.id%>" data-method="DELETE">Logout</a></h4>
+<h1>Your Products that are not yet sold:</h1>
+<table>
+    <thead>
+      <tr>
+        <td><h4>Product</h4></td>
+        <td><h4>Date Posted</h4></td>
+        <td><h4>Amount</h4></td>
+        <td><h4>Action</h4></td>
+      </tr>
+    </thead>
+    <tbody>
+    <% @products.reverse.each do |product| %>
+      <% if !product.transactions.exists? %>
+      <tr>
+        <td><%= product.name %></td>
+        <td><%= product.user.first_name %> <%= product.user.last_name %></td>
+        <td><%= product.created_at.strftime("%B %d, %Y") %></td>
+        <td>$<%= product.price %></td>
+        <td><a href="/products/<%= product.id%>" data-method="Delete">Remove</a></td>
+      </tr>
+      <% end %>
+    <% end %>
+    </tbody>
+  </table>
+  <h1>Sales:</h1>
+  <table>
+      <thead>
+        <tr>
+          <td><h4>Product</h4></td>
+          <td><h4>Date Bought</h4></td>
+          <td><h4>Buyer</h4></td>
+          <td><h4>Amount</h4></td>
+        </tr>
+      </thead>
+      <tbody>
+      <% @sales.reverse.each do |sale| %>
+        <tr>
+          <td><%= sale.product.name %></td>
+          <td><%= sale.created_at.strftime("%B %d, %Y") %></td>
+          <td><%= sale.user.first_name %> <%= sale.user.last_name %></td>
+          <td><%= sale.product.price %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <h4>Total: $<%= @sales_total %></h4>
+    <h1>Purchases:</h1>
+    <table>
+        <thead>
+          <tr>
+            <td><h4>Product</h4></td>
+            <td><h4>Date Bought</h4></td>
+            <td><h4>Buyer</h4></td>
+            <td><h4>Amount</h4></td>
+          </tr>
+        </thead>
+        <tbody>
+        <% @purchases.reverse.each do |purchase| %>
+          <tr>
+            <td><%= purchase.product.name %></td>
+            <td><%= purchase.created_at.strftime("%B %d, %Y") %></td>
+            <td><%= purchase.product.user.first_name %> <%= purchase.product.user.last_name %></td>
+            <td>$<%= purchase.product.price %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <h4>Total: $<%= @purchases_total %></h4>
+      <% end %>

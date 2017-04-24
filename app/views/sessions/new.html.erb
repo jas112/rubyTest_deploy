@@ -1,0 +1,36 @@
+<%= content_for :left do %>
+<h1>Register</h1>
+<div style="color: white; font-weight: bold; background-color: red; padding-left: 5px;">
+<% if flash[:errors] %>
+	<% flash[:errors].each do |e| %>
+		<p><%= e %></p>
+	<% end %>
+<% end %>
+</div>
+<form action="/users" method="post">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <p>First Name:</p>
+  <input type="text" name="user[first_name]" id="User_First_Name" placeholder="Enter First Name Here">
+  <p>Last Name:</p>
+  <input type="text" name="user[last_name]" id="User_Last_Name" placeholder="Enter Last Name Here">
+  <p>Email:</p>
+  <input type="text" name="user[email]" id="User_Email" placeholder="Enter Email Here">
+  <p>Password:</p>
+  <input type="password" name="user[password]" id="User_Password" placeholder="Enter Password Here">
+  <p>Password Confirmation:</p>
+  <input type="password" name="user[password_confirmation]" id="User_Password_Confirmation" placeholder="Enter Password Confirmation Here">
+  <input type="submit" name="Register" value="Register">
+</form>
+<% end %>
+
+<%= content_for :right do %>
+<h1>Login</h1>
+<form action="/sessions" method="post">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <p>Email:</p>
+  <input type="text" name="email" id="Email" placeholder="Enter Email Here">
+  <p>Password:</p>
+  <input type="password" name="password" id="Password" placeholder="Enter Password Here">
+  <input type="submit" name="Login" value="Login">
+</form>
+<% end %>
